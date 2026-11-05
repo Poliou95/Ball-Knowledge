@@ -1,0 +1,256 @@
+/* ==========================================================================
+   Ball Knowledge — style « carnet de recruteur » : clair, sobre, une couleur vive
+   ========================================================================== */
+:root {
+  --fond: #F6F4EE;          /* blanc cassé */
+  --surface: #FFFFFF;
+  --texte: #1F2421;          /* gris très foncé */
+  --texte-doux: #5D655F;
+  --ligne: #DEDAD0;
+  --vert: #1B5E3B;           /* pastilles */
+  --vert-clair: #E3EEE6;
+  --orange: #E8590C;         /* flèches et action */
+  --orange-fonce: #C44A08;
+  --rouge: #C92A2A;
+  --ocean: #E6EEF3;          /* océans bleu très pâle */
+  --terre: #E2DED3;          /* terres gris-beige */
+  --frontiere: #FFFFFF;
+  --rayon: 14px;
+  --haut: env(safe-area-inset-top, 0px);
+  --bas: env(safe-area-inset-bottom, 0px);
+  --vvh: 100dvh;             /* hauteur visible, mise à jour en JS (clavier iPhone) */
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--fond);
+  color: var(--texte);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+[hidden] { display: none !important; }
+
+/* Conteneur fixe calé sur la zone réellement visible (au-dessus du clavier) */
+#app {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--vvh);
+  overflow: hidden;
+}
+.ecran { display: none; height: 100%; }
+.ecran.actif { display: flex; flex-direction: column; }
+
+/* ------------------------------ Boutons ------------------------------ */
+.bouton-principal {
+  display: block; width: 100%;
+  border: 0; border-radius: var(--rayon);
+  background: var(--orange); color: #fff;
+  font-weight: 700; font-size: 18px;
+  padding: 15px 18px;
+  box-shadow: 0 2px 0 var(--orange-fonce);
+}
+.bouton-principal:active { transform: translateY(1px); box-shadow: none; }
+.bouton-secondaire {
+  display: block; width: 100%;
+  border: 1.5px solid var(--ligne); border-radius: var(--rayon);
+  background: var(--surface); color: var(--texte);
+  font-weight: 600; padding: 13px 18px;
+}
+.bouton-danger {
+  border: 0; border-radius: var(--rayon);
+  background: var(--rouge); color: #fff; font-weight: 700; padding: 13px 18px;
+}
+.bouton-icone {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1.5px solid var(--ligne); background: var(--surface);
+  font-size: 16px; line-height: 1; color: var(--texte-doux);
+}
+
+/* ------------------------------ Accueil ------------------------------ */
+#ecran-accueil { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.accueil-contenu {
+  width: 100%; max-width: 480px; margin: 0 auto;
+  padding: calc(var(--haut) + 24px) 16px calc(var(--bas) + 24px);
+  display: flex; flex-direction: column; gap: 18px;
+}
+.accueil-entete { text-align: center; }
+.logo { width: 120px; height: 48px; }
+.logo-fleche { fill: none; stroke: var(--orange); stroke-width: 3; stroke-linecap: round; }
+.logo-pastille { fill: var(--vert); }
+.logo-num { fill: #fff; font-size: 11px; font-weight: 700; text-anchor: middle; }
+h1 { font-size: 32px; letter-spacing: -0.02em; margin: 6px 0 2px; }
+.accroche { margin: 0; color: var(--texte-doux); }
+
+.choix { border: 0; margin: 0; padding: 0; }
+.choix legend { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texte-doux); margin-bottom: 8px; padding: 0; }
+.segments { display: flex; gap: 6px; background: #ECE9E0; padding: 4px; border-radius: var(--rayon); }
+.segments button {
+  flex: 1; border: 0; border-radius: 10px; background: transparent;
+  padding: 11px 6px; font-weight: 600; color: var(--texte-doux);
+}
+.segments button[aria-checked="true"] { background: var(--surface); color: var(--texte); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.aide-mode { margin: 8px 2px 0; font-size: 14px; color: var(--texte-doux); }
+
+.records h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texte-doux); margin: 0 0 8px; }
+.records table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--rayon); overflow: hidden; border: 1px solid var(--ligne); }
+.records th, .records td { padding: 9px 12px; text-align: right; font-variant-numeric: tabular-nums; }
+.records th:first-child, .records td:first-child { text-align: left; }
+.records thead th { font-size: 13px; color: var(--texte-doux); font-weight: 600; border-bottom: 1px solid var(--ligne); }
+.records tbody tr + tr td { border-top: 1px solid #EFEDE6; }
+.records td:first-child { font-weight: 600; }
+
+.regles { background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 12px 14px; }
+.regles summary { font-weight: 600; }
+.regles ul { margin: 10px 0 0; padding-left: 18px; color: var(--texte-doux); font-size: 15px; }
+.regles li + li { margin-top: 6px; }
+.maj { text-align: center; font-size: 13px; color: var(--texte-doux); margin: 0; }
+
+/* ------------------------------ Jeu ------------------------------ */
+#ecran-jeu { padding-top: var(--haut); }
+.barre-haut {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 16px 4px;
+}
+.progression { flex: 1; text-align: center; font-weight: 600; font-size: 15px; }
+.vies { letter-spacing: 3px; font-size: 18px; color: var(--rouge); }
+.vies .perdue { color: #C9C4B8; }
+.score { min-width: 40px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.score #score { font-size: 18px; }
+
+.chrono { display: flex; align-items: center; gap: 10px; padding: 4px 16px 8px; }
+.chrono-barre { flex: 1; height: 8px; background: #E5E1D7; border-radius: 4px; overflow: hidden; }
+.chrono-rempli { height: 100%; width: 100%; background: var(--vert); border-radius: 4px; transform-origin: left; }
+.chrono.urgent .chrono-rempli { background: var(--rouge); }
+.chrono-texte { width: 40px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; font-size: 15px; }
+.chrono.urgent .chrono-texte { color: var(--rouge); }
+
+.carte-cadre {
+  position: relative;
+  margin: 0 16px;
+  height: clamp(130px, 42%, 380px);
+  flex: none;
+  border-radius: var(--rayon);
+  overflow: hidden;
+  background: var(--ocean);
+  border: 1px solid var(--ligne);
+}
+#carte { display: block; width: 100%; height: 100%; }
+#carte .terres { fill: var(--terre); stroke: none; }
+#carte .frontieres { fill: none; stroke: var(--frontiere); stroke-width: 0.9px; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+#carte .fleche { fill: none; stroke: var(--orange); stroke-linecap: round; }
+#carte .pointe { fill: var(--orange); }
+#carte .pastille { fill: var(--vert); stroke: #fff; }
+#carte .numero { fill: #fff; font-weight: 700; text-anchor: middle; dominant-baseline: central; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Helvetica, Arial, sans-serif; }
+#carte .ancre { fill: var(--vert); }
+#carte .liaison { stroke: var(--vert); fill: none; opacity: .6; }
+
+.parcours {
+  flex: 1 1 auto; min-height: 0;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  margin: 0; padding: 8px 16px 8px;
+  list-style: none; counter-reset: etape;
+}
+.parcours li {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 6px 0; border-bottom: 1px solid #ECE8DF;
+  font-size: 16px;
+}
+.parcours li:last-child { border-bottom: 0; }
+.parcours .num {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--vert); color: #fff; font-size: 13px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+  transform: translateY(5px);
+}
+.parcours .club { font-weight: 600; }
+.parcours .annees { color: var(--texte-doux); font-variant-numeric: tabular-nums; }
+
+.barre-reponse {
+  flex: none;
+  background: var(--fond);
+  border-top: 1px solid var(--ligne);
+  padding: 6px 16px calc(10px + var(--bas-actif, var(--bas)));
+}
+.message { margin: 0 0 6px; min-height: 20px; font-size: 14px; font-weight: 600; color: var(--texte-doux); text-align: center; }
+.message.erreur { color: var(--rouge); }
+.message.info { color: var(--orange-fonce); }
+.ligne-reponse { display: flex; gap: 8px; }
+#reponse {
+  flex: 1; min-width: 0;
+  border: 2px solid var(--ligne); border-radius: 12px;
+  background: var(--surface);
+  padding: 11px 12px; font-size: 17px; /* ≥ 16px : évite le zoom automatique de Safari */
+  outline: none;
+}
+#reponse:focus { border-color: var(--vert); }
+#reponse.faux { border-color: var(--rouge); background: #FFF2F2; animation: tremble .35s; }
+@keyframes tremble {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); } 40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); } 80% { transform: translateX(3px); }
+}
+.bouton-valider {
+  border: 0; border-radius: 12px; background: var(--vert); color: #fff;
+  font-weight: 700; padding: 0 16px;
+}
+.bouton-passer {
+  border: 1.5px solid var(--ligne); border-radius: 12px; background: var(--surface);
+  color: var(--texte-doux); font-weight: 600; padding: 0 12px; font-size: 15px;
+}
+.ligne-reponse button:disabled { opacity: .45; }
+
+/* Révélation */
+.revelation {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: rgba(246, 244, 238, 0.55);
+  padding: 10px;
+}
+.revelation-carte {
+  width: 100%; max-height: 100%; overflow-y: auto;
+  background: var(--surface); border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.16);
+  padding: 12px 14px 14px; text-align: center;
+}
+.revelation-etat { margin: 0; font-weight: 700; font-size: 14px; }
+.revelation-etat.gagne { color: var(--vert); }
+.revelation-etat.perdu { color: var(--rouge); }
+.revelation-nom { margin: 2px 0 4px; font-size: 22px; letter-spacing: -0.01em; }
+.revelation-texte { margin: 0 0 10px; color: var(--texte-doux); font-size: 14px; }
+.revelation .bouton-principal { padding: 11px; font-size: 17px; }
+
+/* ------------------------------ Fin ------------------------------ */
+#ecran-fin { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.fin-contenu {
+  width: 100%; max-width: 480px; margin: 0 auto;
+  padding: calc(var(--haut) + 32px) 16px calc(var(--bas) + 24px);
+  display: flex; flex-direction: column; gap: 12px; text-align: center;
+}
+.fin-contenu h1 { margin: 0; }
+.fin-sous-titre { margin: 0; color: var(--texte-doux); }
+.fin-scores { display: flex; gap: 10px; margin: 8px 0 0; }
+.fin-scores > div { flex: 1; background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 14px 8px; }
+.fin-scores .etiquette { display: block; font-size: 13px; color: var(--texte-doux); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.fin-scores .valeur { display: block; font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.nouveau-record { margin: 0; color: var(--orange-fonce); font-weight: 800; font-size: 18px; }
+.recap-titre { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-doux); margin: 14px 0 0; text-align: left; }
+.recap { list-style: none; margin: 0; padding: 0; text-align: left; background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--rayon); }
+.recap li { display: flex; justify-content: space-between; gap: 10px; padding: 9px 12px; }
+.recap li + li { border-top: 1px solid #EFEDE6; }
+.recap .pts { font-weight: 700; font-variant-numeric: tabular-nums; }
+.recap .rate .pts { color: var(--texte-doux); font-weight: 500; }
+
+/* ------------------------------ Dialogue ------------------------------ */
+.dialogue { position: absolute; inset: 0; background: rgba(31,36,33,.45); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 10; }
+.dialogue-boite { background: var(--surface); border-radius: 18px; padding: 18px; width: 100%; max-width: 360px; text-align: center; }
+.dialogue-boite p { margin: 0 0 14px; font-weight: 600; }
+.dialogue-boutons { display: flex; gap: 10px; }
+.dialogue-boutons button { flex: 1; }

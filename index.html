@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>Ball Knowledge</title>
+  <meta name="description" content="Devine le footballeur grâce à sa carrière en clubs, affichée sur une carte du monde.">
+  <meta name="theme-color" content="#F6F4EE">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Ball Knowledge">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icones/icone-192.png">
+  <link rel="apple-touch-icon" href="icones/icone-180.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ===================== ACCUEIL ===================== -->
+  <section id="ecran-accueil" class="ecran actif" aria-labelledby="titre-jeu">
+    <div class="accueil-contenu">
+      <header class="accueil-entete">
+        <svg class="logo" viewBox="0 0 120 48" aria-hidden="true">
+          <path d="M18 34 Q 44 6 64 22" class="logo-fleche"/>
+          <path d="M64 22 Q 84 38 102 16" class="logo-fleche"/>
+          <circle cx="18" cy="34" r="9" class="logo-pastille"/><text x="18" y="38" class="logo-num">1</text>
+          <circle cx="64" cy="22" r="9" class="logo-pastille"/><text x="64" y="26" class="logo-num">2</text>
+          <circle cx="102" cy="16" r="9" class="logo-pastille"/><text x="102" y="20" class="logo-num">3</text>
+        </svg>
+        <h1 id="titre-jeu">Ball Knowledge</h1>
+        <p class="accroche">Devine le footballeur grâce à sa carrière en clubs.</p>
+      </header>
+
+      <fieldset class="choix">
+        <legend>Niveau</legend>
+        <div class="segments" role="radiogroup" id="choix-niveau">
+          <button type="button" role="radio" data-valeur="facile" aria-checked="true">Facile</button>
+          <button type="button" role="radio" data-valeur="difficile" aria-checked="false">Difficile</button>
+          <button type="button" role="radio" data-valeur="expert" aria-checked="false">Expert</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="choix">
+        <legend>Mode</legend>
+        <div class="segments" role="radiogroup" id="choix-mode">
+          <button type="button" role="radio" data-valeur="classique" aria-checked="true">Partie classique</button>
+          <button type="button" role="radio" data-valeur="marathon" aria-checked="false">Marathon</button>
+        </div>
+        <p class="aide-mode" id="aide-mode"></p>
+      </fieldset>
+
+      <button type="button" class="bouton-principal" id="bouton-jouer">Jouer</button>
+
+      <section class="records" aria-labelledby="titre-records">
+        <h2 id="titre-records">Meilleurs scores</h2>
+        <table>
+          <thead><tr><th></th><th>Classique</th><th>Marathon</th></tr></thead>
+          <tbody id="table-records"></tbody>
+        </table>
+      </section>
+
+      <details class="regles">
+        <summary>Règles du jeu</summary>
+        <ul>
+          <li>Tout le parcours en clubs du joueur s'affiche sur la carte et dans la liste.</li>
+          <li>Tu as 45 secondes par footballeur et autant d'essais que tu veux.</li>
+          <li>Bonne réponse : 100 points + 1 point par seconde restante.</li>
+          <li>Le nom de famille seul suffit s'il n'y a pas d'ambiguïté. Accents et petites fautes sont tolérés.</li>
+          <li>Seuls les clubs professionnels seniors sont affichés : ni prêts, ni centres de formation, ni sélections.</li>
+          <li>Marathon : 3 vies. Passer ou laisser filer le chrono coûte une vie.</li>
+        </ul>
+      </details>
+
+      <p class="maj" id="date-maj"></p>
+    </div>
+  </section>
+
+  <!-- ===================== JEU ===================== -->
+  <section id="ecran-jeu" class="ecran" aria-label="Partie en cours">
+    <header class="barre-haut">
+      <button type="button" class="bouton-icone" id="bouton-quitter" aria-label="Quitter la partie">✕</button>
+      <div class="progression" id="progression"></div>
+      <div class="score" aria-live="polite"><span id="score">0</span> pts</div>
+    </header>
+    <div class="chrono" aria-hidden="true">
+      <div class="chrono-barre"><div class="chrono-rempli" id="chrono-rempli"></div></div>
+      <div class="chrono-texte" id="chrono-texte">45 s</div>
+    </div>
+
+    <div class="carte-cadre">
+      <svg id="carte" role="img" aria-label="Carte du parcours du joueur"></svg>
+      <div class="revelation" id="revelation" hidden>
+        <div class="revelation-carte">
+          <p class="revelation-etat" id="revelation-etat"></p>
+          <h2 class="revelation-nom" id="revelation-nom"></h2>
+          <p class="revelation-texte" id="revelation-texte"></p>
+          <button type="button" class="bouton-principal" id="bouton-suivant">Suivant</button>
+        </div>
+      </div>
+    </div>
+
+    <ol class="parcours" id="parcours" aria-label="Carrière en clubs"></ol>
+
+    <form class="barre-reponse" id="formulaire" autocomplete="off">
+      <p class="message" id="message" aria-live="assertive"></p>
+      <div class="ligne-reponse">
+        <input id="reponse" type="text" inputmode="text" enterkeyhint="send" placeholder="Nom du joueur…"
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Ta réponse">
+        <button type="submit" class="bouton-valider" id="bouton-valider">OK</button>
+        <button type="button" class="bouton-passer" id="bouton-passer" aria-label="Passer au footballeur suivant">Passer</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ===================== FIN ===================== -->
+  <section id="ecran-fin" class="ecran" aria-labelledby="titre-fin">
+    <div class="fin-contenu">
+      <h1 id="titre-fin">Partie terminée</h1>
+      <p class="fin-sous-titre" id="fin-sous-titre"></p>
+      <div class="fin-scores">
+        <div><span class="etiquette">Score</span><span class="valeur" id="fin-score">0</span></div>
+        <div><span class="etiquette">Meilleur score</span><span class="valeur" id="fin-record">0</span></div>
+      </div>
+      <p class="nouveau-record" id="nouveau-record" hidden>Nouveau record !</p>
+      <button type="button" class="bouton-principal" id="bouton-rejouer">Rejouer</button>
+      <button type="button" class="bouton-secondaire" id="bouton-accueil">Changer de niveau ou de mode</button>
+      <h2 class="recap-titre">Récapitulatif</h2>
+      <ol class="recap" id="recap"></ol>
+    </div>
+  </section>
+
+  <!-- ===================== CONFIRMATION ===================== -->
+  <div class="dialogue" id="dialogue-quitter" hidden role="dialog" aria-modal="true" aria-labelledby="dialogue-titre">
+    <div class="dialogue-boite">
+      <p id="dialogue-titre">Quitter la partie ? Le score ne sera pas enregistré.</p>
+      <div class="dialogue-boutons">
+        <button type="button" class="bouton-secondaire" id="dialogue-non">Continuer</button>
+        <button type="button" class="bouton-danger" id="dialogue-oui">Quitter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data/carte.js"></script>
+<script src="data/clubs.js"></script>
+<script src="data/joueurs.js"></script>
+<script src="js/reponses.js"></script>
+<script src="js/carte.js"></script>
+<script src="js/jeu.js"></script>
+</body>
+</html>
