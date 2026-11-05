@@ -168,7 +168,7 @@
     message('', '');
     etat.accepteReponses = true;
     lancerChrono(DUREE);
-    entree.focus();
+    // Pas de focus automatique : le clavier ne s'ouvre que lorsque le joueur touche la case.
   }
 
   function majBandeau() {
@@ -354,7 +354,6 @@
   $('dialogue-non').addEventListener('click', function () {
     $('dialogue-quitter').hidden = true;
     reprise();
-    if (etat.accepteReponses) entree.focus();
   });
   $('dialogue-oui').addEventListener('click', function () {
     $('dialogue-quitter').hidden = true;
