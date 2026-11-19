@@ -1,0 +1,150 @@
+/* ==========================================================================
+   Grand Chelem — compléments à style.css (mêmes couleurs, mêmes boutons)
+   ========================================================================== */
+
+/* ------------------------------ Préparation ------------------------------ */
+#ecran-preparation { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.lien-retour { align-self: flex-start; color: var(--texte-doux); font-weight: 600; text-decoration: none; font-size: 15px; }
+.gc-logo { width: 72px; height: 72px; }
+
+.gc-liste-joueurs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.gc-liste-joueurs li { display: flex; align-items: center; gap: 10px; }
+.gc-pastille-joueur {
+  flex: none; width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.18);
+}
+.gc-liste-joueurs input {
+  flex: 1; min-width: 0;
+  border: 2px solid var(--ligne); border-radius: 12px; background: var(--surface);
+  padding: 10px 12px; font-size: 17px; outline: none;
+}
+.gc-liste-joueurs input:focus { border-color: var(--vert); }
+.gc-retirer { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--ligne); background: var(--surface); color: var(--texte-doux); }
+.gc-ajouter {
+  margin-top: 8px; width: 100%;
+  border: 1.5px dashed #C9C4B8; border-radius: 12px; background: transparent;
+  padding: 11px; font-weight: 600; color: var(--texte-doux);
+}
+.gc-ajouter:disabled { display: none; }
+
+.gc-categories h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texte-doux); margin: 0 0 8px; }
+.gc-categories ul {
+  list-style: none; margin: 0; padding: 4px 12px;
+  background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--rayon);
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px;
+}
+.gc-categories li { display: flex; align-items: center; gap: 8px; padding: 8px 0; font-weight: 600; font-size: 15px; }
+.gc-puce { flex: none; width: 14px; height: 14px; border-radius: 4px; }
+
+/* ------------------------------ Partie ------------------------------ */
+#ecran-partie { padding-top: var(--haut); }
+.gc-tour { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 16px; }
+.gc-tour span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gc-tour .gc-pastille-joueur { width: 20px; height: 20px; }
+.gc-lancers { min-width: 40px; text-align: right; font-size: 13px; color: var(--texte-doux); font-variant-numeric: tabular-nums; line-height: 1.15; }
+
+.gc-plateau-cadre {
+  flex: 1 1 auto; min-height: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px 8px;
+}
+#plateau { display: block; width: 100%; height: 100%; max-width: 520px; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+#plateau .case { stroke: var(--fond); stroke-width: 1.6; }
+#plateau .case.relance { fill: #D6D2C8; }
+#plateau .symbole { fill: #fff; font-weight: 800; text-anchor: middle; dominant-baseline: central; pointer-events: none; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Helvetica, Arial, sans-serif; }
+#plateau .relance-txt { fill: #6B6559; font-size: 14px; }
+#plateau .etoile { font-size: 20px; }
+#plateau .moyeu { stroke: var(--fond); stroke-width: 1.6; }
+#plateau .moyeu-centre { fill: var(--surface); }
+#plateau .cible { fill: none; stroke: var(--texte); stroke-width: 3.2; pointer-events: none; animation: gc-pulse 1s ease-in-out infinite alternate; }
+@keyframes gc-pulse { from { stroke-opacity: 1; } to { stroke-opacity: .35; } }
+#plateau.choix .case:not(.atteignable), #plateau.choix .moyeu:not(.atteignable) { opacity: .45; }
+#plateau .pion { stroke: #fff; stroke-width: 2; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.35)); transition: cx .12s linear, cy .12s linear; }
+#plateau .pion.actif { stroke-width: 3; }
+#plateau .pion-lettre { fill: #fff; font-size: 10px; font-weight: 800; text-anchor: middle; dominant-baseline: central; pointer-events: none; font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; }
+
+.gc-scores {
+  flex: none; list-style: none; margin: 0; padding: 4px 16px;
+  display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.gc-scores li {
+  flex: 1 0 auto; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 5px 8px; border-radius: 10px; border: 1.5px solid transparent;
+  background: var(--surface); font-size: 13px; font-weight: 600;
+}
+.gc-scores li.actif { border-color: var(--texte); }
+.gc-scores .nom { display: flex; align-items: center; gap: 5px; max-width: 110px; }
+.gc-scores .nom span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gc-scores .gc-pastille-joueur { width: 12px; height: 12px; border-width: 1.5px; }
+.gc-trophees { display: flex; gap: 3px; }
+.gc-trophees i { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid #D6D2C8; }
+
+.gc-action {
+  flex: none; border-top: 1px solid var(--ligne);
+  padding: 6px 16px calc(10px + var(--bas));
+}
+.gc-action .message { min-height: 20px; }
+.gc-action-ligne { display: flex; gap: 10px; align-items: stretch; }
+.gc-de {
+  flex: none; width: 54px; border-radius: 12px; background: var(--surface); border: 1.5px solid var(--ligne);
+  display: flex; align-items: center; justify-content: center;
+}
+.gc-de svg { width: 38px; height: 38px; }
+.gc-de.roule svg { animation: gc-roule .45s ease-out; }
+@keyframes gc-roule { 0% { transform: rotate(-200deg) scale(.6); } 100% { transform: rotate(0) scale(1); } }
+.gc-action .bouton-principal:disabled { opacity: .45; }
+
+/* ------------------------------ Feuille question ------------------------------ */
+.gc-feuille {
+  position: absolute; inset: 0; z-index: 8;
+  background: rgba(31,36,33,.45);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.gc-feuille-boite {
+  width: 100%; max-width: 520px; max-height: 92%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: var(--surface); border-radius: 20px 20px 0 0;
+  border-top: 8px solid var(--cat, var(--orange));
+  padding: 14px 16px calc(16px + var(--bas));
+  animation: gc-monte .22s ease-out;
+}
+@keyframes gc-monte { from { transform: translateY(40px); opacity: .4; } to { transform: none; opacity: 1; } }
+.gc-feuille-entete { margin: 0; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--cat, var(--texte-doux)); }
+.gc-feuille-titre { margin: 4px 0 12px; font-size: 21px; line-height: 1.3; letter-spacing: -0.01em; }
+.gc-feuille-corps { display: flex; flex-direction: column; gap: 8px; }
+.gc-option {
+  text-align: left; border: 2px solid var(--ligne); border-radius: 12px; background: var(--surface);
+  padding: 12px 14px; font-weight: 600; font-size: 17px;
+}
+.gc-option.bonne { border-color: var(--vert); background: var(--vert-clair); }
+.gc-option.fausse { border-color: var(--rouge); background: #FFF2F2; }
+.gc-option:disabled { color: var(--texte); opacity: 1; }
+.gc-option:disabled:not(.bonne):not(.fausse) { opacity: .5; }
+.gc-reponse-libre { margin: 0; padding: 12px 14px; border-radius: 12px; background: var(--vert-clair); font-weight: 700; font-size: 19px; text-align: center; }
+.gc-feuille-resultat { margin: 12px 0 0; text-align: center; font-weight: 800; font-size: 17px; min-height: 0; }
+.gc-feuille-resultat:empty { display: none; }
+.gc-feuille-resultat.gagne { color: var(--vert); }
+.gc-feuille-resultat.perdu { color: var(--rouge); }
+.gc-feuille-pied { margin-top: 12px; display: flex; gap: 10px; }
+.gc-feuille-pied:empty { display: none; }
+.gc-feuille-pied > * { flex: 1; }
+.gc-bouton-vert { border: 0; border-radius: var(--rayon); background: var(--vert); color: #fff; font-weight: 700; padding: 13px 10px; }
+.gc-grille-cat { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.gc-bouton-cat {
+  border: 0; border-radius: 12px; color: #fff; font-weight: 700; font-size: 16px;
+  padding: 16px 8px; background: var(--cat); text-shadow: 0 1px 1px rgba(0,0,0,.25);
+}
+.gc-bouton-cat:disabled { opacity: .3; }
+
+/* ------------------------------ Fin ------------------------------ */
+.gc-coupe { font-size: 56px; margin: 0; line-height: 1; }
+#bilan li { align-items: center; }
+#bilan .nom { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+#bilan .gc-pastille-joueur { width: 16px; height: 16px; border-width: 1.5px; }
+#bilan .detail { color: var(--texte-doux); font-size: 14px; font-variant-numeric: tabular-nums; text-align: right; }
+
+/* un fieldset s'élargit par défaut à son contenu : on l'en empêche */
+#ecran-preparation .choix { min-width: 0; }
+#bilan .nom { white-space: nowrap; min-width: 0; }
+#bilan .nom span:last-child { overflow: hidden; text-overflow: ellipsis; }
+#bilan .detail span { display: block; }

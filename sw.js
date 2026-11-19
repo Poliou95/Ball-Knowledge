@@ -7,6 +7,7 @@ const FICHIERS = [
   './', 'index.html', 'css/style.css',
   'js/reponses.js', 'js/carte.js', 'js/jeu.js',
   'data/carte.js', 'data/clubs.js', 'data/joueurs.js',
+  'grand-chelem.html', 'css/grand-chelem.css', 'js/grand-chelem.js', 'data/questions.js',
   'manifest.webmanifest', 'icones/icone-180.png', 'icones/icone-192.png', 'icones/icone-512.png',
 ];
 self.addEventListener('install', (e) => {

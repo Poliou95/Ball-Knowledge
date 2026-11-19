@@ -254,3 +254,17 @@ h1 { font-size: 32px; letter-spacing: -0.02em; margin: 6px 0 2px; }
 .dialogue-boite p { margin: 0 0 14px; font-weight: 600; }
 .dialogue-boutons { display: flex; gap: 10px; }
 .dialogue-boutons button { flex: 1; }
+
+/* Lien vers l'autre jeu (Grand Chelem) */
+.lien-autre-jeu {
+  display: block; text-decoration: none; color: var(--texte);
+  background: var(--surface); border: 1.5px solid var(--ligne); border-radius: var(--rayon);
+  padding: 12px 14px 12px 50px; position: relative;
+}
+.lien-autre-jeu::before {
+  content: ""; position: absolute; left: 14px; top: 50%; width: 24px; height: 24px; margin-top: -12px; border-radius: 50%;
+  background: conic-gradient(from -30deg, #2F6DB5 0 60deg, #C2255C 0 120deg, #D9A400 0 180deg, #8A5A2E 0 240deg, #2F9E44 0 300deg, #E8590C 0);
+}
+.lien-autre-jeu::after { content: "›"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 24px; color: var(--texte-doux); }
+.lien-autre-jeu-titre { display: block; font-weight: 700; }
+.lien-autre-jeu-texte { display: block; font-size: 14px; color: var(--texte-doux); }

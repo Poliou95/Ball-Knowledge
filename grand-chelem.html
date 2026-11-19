@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>Grand Chelem</title>
+  <meta name="description" content="Le quiz football à plateau : 6 catégories, 6 trophées, de 1 à 6 joueurs sur le même téléphone.">
+  <meta name="theme-color" content="#F6F4EE">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Grand Chelem">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icones/icone-192.png">
+  <link rel="apple-touch-icon" href="icones/icone-180.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/grand-chelem.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ===================== PRÉPARATION ===================== -->
+  <section id="ecran-preparation" class="ecran actif" aria-labelledby="titre-gc">
+    <div class="accueil-contenu">
+      <a class="lien-retour" href="./">← Ball Knowledge</a>
+      <header class="accueil-entete">
+        <svg class="gc-logo" viewBox="-50 -50 100 100" aria-hidden="true" id="logo-gc"></svg>
+        <h1 id="titre-gc">Grand Chelem</h1>
+        <p class="accroche">Le quiz football à plateau. Gagne les 6 trophées, puis réponds à la question finale au centre.</p>
+      </header>
+
+      <button type="button" class="bouton-secondaire" id="bouton-reprendre" hidden>Reprendre la partie en cours</button>
+
+      <fieldset class="choix">
+        <legend>Joueurs</legend>
+        <ol class="gc-liste-joueurs" id="liste-joueurs"></ol>
+        <button type="button" class="gc-ajouter" id="bouton-ajouter">+ Ajouter un joueur</button>
+      </fieldset>
+
+      <fieldset class="choix">
+        <legend>Réponses</legend>
+        <div class="segments" role="radiogroup" id="choix-reponses">
+          <button type="button" role="radio" data-valeur="qcm" aria-checked="true">Choix multiples</button>
+          <button type="button" role="radio" data-valeur="libre" aria-checked="false">Réponse libre</button>
+        </div>
+        <p class="aide-mode" id="aide-reponses"></p>
+      </fieldset>
+
+      <button type="button" class="bouton-principal" id="bouton-commencer">Commencer</button>
+
+      <section class="gc-categories" aria-labelledby="titre-categories">
+        <h2 id="titre-categories">Les 6 catégories</h2>
+        <ul id="legende-categories"></ul>
+      </section>
+
+      <details class="regles">
+        <summary>Règles du jeu</summary>
+        <ul>
+          <li>Tous les pions partent du centre. À ton tour, lance le dé puis touche une des cases en surbrillance : on avance du nombre exact de cases, sans faire demi-tour.</li>
+          <li>Tu reçois une question de la couleur de la case. Bonne réponse : tu rejoues. Mauvaise réponse : la main passe au joueur suivant.</li>
+          <li>Les grandes cases marquées d'une étoile, au bout de chaque rayon, sont les cases trophée : bonne réponse = trophée de cette catégorie.</li>
+          <li>Les cases grises <b>↻</b> font relancer le dé.</li>
+          <li>Au centre sans les 6 trophées, tu choisis la catégorie. Avec les 6 trophées, il faut s'arrêter pile au centre : les adversaires choisissent la catégorie de la question finale. Bonne réponse : victoire !</li>
+          <li>Seul, le but est de gagner le plus vite possible : moins tu lances le dé, mieux c'est.</li>
+        </ul>
+      </details>
+
+      <p class="maj" id="gc-info"></p>
+    </div>
+  </section>
+
+  <!-- ===================== PARTIE ===================== -->
+  <section id="ecran-partie" class="ecran" aria-label="Partie en cours">
+    <header class="barre-haut">
+      <button type="button" class="bouton-icone" id="bouton-quitter" aria-label="Quitter la partie">✕</button>
+      <div class="gc-tour" id="tour" aria-live="polite"></div>
+      <div class="gc-lancers" id="lancers"></div>
+    </header>
+
+    <div class="gc-plateau-cadre">
+      <svg id="plateau" viewBox="-200 -200 400 400" role="img" aria-label="Plateau de jeu"></svg>
+    </div>
+
+    <ol class="gc-scores" id="scores" aria-label="Trophées des joueurs"></ol>
+
+    <div class="gc-action">
+      <p class="message" id="message" aria-live="polite"></p>
+      <div class="gc-action-ligne">
+        <div class="gc-de" id="de" aria-hidden="true"></div>
+        <button type="button" class="bouton-principal" id="bouton-lancer">Lancer le dé</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FIN ===================== -->
+  <section id="ecran-fin" class="ecran" aria-labelledby="titre-fin">
+    <div class="fin-contenu">
+      <p class="gc-coupe" aria-hidden="true">🏆</p>
+      <h1 id="titre-fin"></h1>
+      <p class="fin-sous-titre" id="fin-sous-titre"></p>
+      <p class="nouveau-record" id="nouveau-record" hidden>Nouveau record !</p>
+      <button type="button" class="bouton-principal" id="bouton-rejouer">Rejouer avec les mêmes joueurs</button>
+      <button type="button" class="bouton-secondaire" id="bouton-preparation">Changer les joueurs</button>
+      <h2 class="recap-titre">Bilan</h2>
+      <ol class="recap" id="bilan"></ol>
+    </div>
+  </section>
+
+  <!-- ===================== QUESTION / CHOIX DE CATÉGORIE ===================== -->
+  <div class="gc-feuille" id="feuille" hidden role="dialog" aria-modal="true" aria-labelledby="feuille-titre">
+    <div class="gc-feuille-boite" id="feuille-boite">
+      <p class="gc-feuille-entete" id="feuille-entete"></p>
+      <h2 class="gc-feuille-titre" id="feuille-titre"></h2>
+      <div class="gc-feuille-corps" id="feuille-corps"></div>
+      <p class="gc-feuille-resultat" id="feuille-resultat" aria-live="assertive"></p>
+      <div class="gc-feuille-pied" id="feuille-pied"></div>
+    </div>
+  </div>
+
+  <!-- ===================== CONFIRMATION ===================== -->
+  <div class="dialogue" id="dialogue-quitter" hidden role="dialog" aria-modal="true" aria-labelledby="dialogue-titre">
+    <div class="dialogue-boite">
+      <p id="dialogue-titre">Quitter la partie ? Elle restera enregistrée et tu pourras la reprendre.</p>
+      <div class="dialogue-boutons">
+        <button type="button" class="bouton-secondaire" id="dialogue-non">Continuer</button>
+        <button type="button" class="bouton-danger" id="dialogue-oui">Quitter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data/questions.js"></script>
+<script src="js/grand-chelem.js"></script>
+</body>
+</html>

@@ -12,6 +12,19 @@ Jeu web en français, pensé pour Safari sur iPhone (mode portrait). Il n'utilis
 - 45 secondes par footballeur, essais illimités. Bonne réponse : 100 points + 1 point par seconde restante.
 - Les meilleurs scores sont enregistrés sur l'appareil (dans Safari).
 
+## Grand Chelem (quiz à plateau)
+
+Accessible depuis l'écran d'accueil, ou directement via `grand-chelem.html`. C'est un quiz football sur plateau, sur le principe du Trivial Pursuit.
+
+- De 1 à 6 joueurs sur le même téléphone, chacun son tour.
+- 6 catégories : Mondial & Euro, Coupes d'Europe, Foot français, Clubs & stades, Joueurs, Règles & insolite.
+- On lance le dé, on choisit sa case parmi celles en surbrillance, on répond à une question de la couleur de la case. Bonne réponse : on rejoue.
+- Bonne réponse sur une case ★ (au bout de chaque rayon) : trophée de la catégorie. Avec les 6 trophées, il faut s'arrêter pile au centre et répondre à la question finale, dont la catégorie est choisie par les adversaires.
+- Deux façons de répondre : **choix multiples** (le téléphone vérifie) ou **réponse libre** (on répond à voix haute, puis on découvre la réponse).
+- La partie est enregistrée à chaque étape : on peut fermer Safari et la reprendre plus tard.
+
+Les questions sont dans `data/questions.js` : chaque question a un énoncé, la bonne réponse et trois mauvaises réponses. Vérifiez-les avec `node outils/verifier-questions.mjs`.
+
 ## Organisation des fichiers
 
 | Fichier | Rôle |
@@ -24,6 +37,8 @@ Jeu web en français, pensé pour Safari sur iPhone (mode portrait). Il n'utilis
 | `data/joueurs.js` | **Les 300 joueurs** : niveau, réponses acceptées, phrase de présentation, carrière. |
 | `data/clubs.js` | **Les clubs** : nom affiché et coordonnées (latitude, longitude). |
 | `data/carte.js` | Le fond de carte (Natural Earth, domaine public). Généré automatiquement. |
+| `grand-chelem.html`, `css/grand-chelem.css`, `js/grand-chelem.js` | Le quiz à plateau Grand Chelem (plateau, dé, tours, trophées). |
+| `data/questions.js` | **Les questions du Grand Chelem**, par catégorie. |
 | `sw.js`, `manifest.webmanifest`, `icones/` | Installation sur l'écran d'accueil et fonctionnement hors connexion. |
 | `outils/` | Scripts de vérification (voir plus bas). |
 
@@ -47,6 +62,7 @@ Si Node.js est installé sur votre ordinateur :
 ```
 node outils/verifier-donnees.mjs   # cohérence des données (clubs existants, années dans l'ordre…)
 node outils/tester-reponses.mjs    # reconnaissance des réponses (Ronaldo ≠ Cristiano Ronaldo, etc.)
+node outils/verifier-questions.mjs # questions du Grand Chelem (3 mauvaises réponses, pas de doublon…)
 ```
 
 ## Tester sur un ordinateur
